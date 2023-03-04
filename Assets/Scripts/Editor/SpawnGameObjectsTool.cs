@@ -7,20 +7,19 @@ public class SpawnGameObjectsTool : EditorWindow
 {
     private GameObject m_prefab;
     private Transform m_prefabContainer;
-
+    private AnimBool m_showExtraFields;
+    
     private string m_objectName;
     
-    private AnimBool m_showExtraFields;
-
-    private readonly SpawnGameObjectHelpMessages m_spawnGameObjectHelpMessages = new SpawnGameObjectHelpMessages();
     private readonly SpawnGameObjectExtraFields m_spawnGameObjectExtraFields = new SpawnGameObjectExtraFields();
-    
+
     [MenuItem("Tools/SpawnGameObject")]
     private static void ShowWindow() => GetWindow(typeof(SpawnGameObjectsTool));
 
     private void OnEnable()
     {
         m_showExtraFields = new AnimBool(true);
+        m_showExtraFields.speed = 8;
         m_showExtraFields.valueChanged.AddListener(Repaint);
     }
 
@@ -29,15 +28,13 @@ public class SpawnGameObjectsTool : EditorWindow
         GUILayout.Label("Spawn GameObject", EditorStyles.boldLabel);
 
         EssentialFields();
+        SpawnButton(m_prefab, m_prefabContainer, m_objectName, m_spawnGameObjectExtraFields);
         
         EditorGUILayout.Space();
         
-        SpawnButton();
+        SpawnGameObjectHelpMessages.HelpMessage(m_prefab, m_objectName, m_prefabContainer);
         
-        EditorGUILayout.Space();
-        
-        m_spawnGameObjectHelpMessages.HelpMessage(m_prefab, m_objectName, m_prefabContainer);
-        m_spawnGameObjectExtraFields.Draw(m_showExtraFields);
+        m_spawnGameObjectExtraFields.DisplayExtraFields(m_showExtraFields);
     }
 
     private void EssentialFields()
@@ -51,32 +48,35 @@ public class SpawnGameObjectsTool : EditorWindow
         EditorGUILayout.HelpBox("Not required", MessageType.None, false);
     }
     
-    private void SpawnButton()
+    private void SpawnButton(GameObject prefab,  Transform prefabContainer, string prefabName, SpawnGameObjectExtraFields  spawnGameObjectExtraFields)
     {
-        var nameNotAssigment = String.IsNullOrEmpty(m_objectName);
-        var prefabNotAssigment = m_prefab == null;
-        var prefabContainerOnDisc = m_prefabContainer != null && EditorUtility.IsPersistent(m_prefabContainer);
+        EditorGUILayout.Space();
+        
+        var nameNotAssigment = String.IsNullOrEmpty(prefabName);
+        var prefabNotAssigment = prefab == null;
+        var prefabContainerOnDisc = prefabContainer != null && EditorUtility.IsPersistent(prefabContainer);
 
         var isDisabled = nameNotAssigment || prefabNotAssigment || prefabContainerOnDisc;
         
         EditorGUI.BeginDisabledGroup(isDisabled); // true -> disabled
 
         if (GUILayout.Button("Spawn Object"))
-            SpawnObjects();
+            SpawnObjects(prefab, prefabContainer, spawnGameObjectExtraFields);
 
         EditorGUI.EndDisabledGroup();
     }
     
-    private void SpawnObjects()
+    private void SpawnObjects(GameObject prefab,  Transform prefabContainer, SpawnGameObjectExtraFields spawnGameObjectExtraFields)
     {
-        var extraFields = m_spawnGameObjectExtraFields.ExtraFields;
-        GameObject newObject = Instantiate(m_prefab, extraFields.Position, Quaternion.identity, m_prefabContainer);
+        var extraFields = spawnGameObjectExtraFields.ExtraFields;
         
-        newObject.name = extraFields.AddId 
+        GameObject spawnedObject = Instantiate(prefab, extraFields.Position, Quaternion.identity, prefabContainer);
+        
+        spawnedObject.name = extraFields.AddId 
             ? m_objectName + "_" + extraFields.Id
             : m_objectName;
 
         if (extraFields.AddId)
-            m_spawnGameObjectExtraFields.IncrementObjectId();
+            spawnGameObjectExtraFields.IncrementObjectId();
     }
 }

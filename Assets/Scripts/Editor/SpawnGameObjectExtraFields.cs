@@ -1,21 +1,11 @@
 ﻿using UnityEditor;
 using UnityEditor.AnimatedValues;
-using UnityEngine;
-
-
-public struct ExtraFields
-{
-    public Vector3 Position;
-    public int Id;
-    public bool AddId;
-}
 
 public class SpawnGameObjectExtraFields
 {
-    private bool m_addId;
     public ExtraFields ExtraFields;
     
-    public void Draw(AnimBool showExtraFields)
+    public void DisplayExtraFields(AnimBool showExtraFields)
     {
         showExtraFields.target = EditorGUILayout.ToggleLeft("Show extra fields", showExtraFields.target);
 

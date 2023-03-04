@@ -2,9 +2,9 @@
 using UnityEditor;
 using UnityEngine;
 
-public class SpawnGameObjectHelpMessages
+public static class SpawnGameObjectHelpMessages
 {
-    public void HelpMessage(GameObject prefab, string prefabName, Transform prefabContainer)
+    public static void HelpMessage(GameObject prefab, string prefabName, Transform prefabContainer)
     {
         if (prefab == null)
             EditorGUILayout.HelpBox("Place a Prefab to Spawn.", 
