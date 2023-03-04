@@ -7,28 +7,21 @@ public class SpawnGameObjectsTool : EditorWindow
 {
     private GameObject m_prefab;
     private Transform m_prefabContainer;
-    private Vector3 m_position = Vector3.zero;
-    
-    private bool m_addId = true;
+
     private string m_objectName;
     
-    private int objectID;
-    private bool extraOptions;
-    
-    AnimBool m_ShowExtraFields;
+    private AnimBool m_showExtraFields;
 
     private readonly SpawnGameObjectHelpMessages m_spawnGameObjectHelpMessages = new SpawnGameObjectHelpMessages();
+    private readonly SpawnGameObjectExtraFields m_spawnGameObjectExtraFields = new SpawnGameObjectExtraFields();
     
-    [MenuItem("Tools/SpawnGameObjects")]
-    private static void Init()
-    {
-        SpawnGameObjectsTool window = (SpawnGameObjectsTool)EditorWindow.GetWindow(typeof(SpawnGameObjectsTool));
-    }
+    [MenuItem("Tools/SpawnGameObject")]
+    private static void ShowWindow() => GetWindow(typeof(SpawnGameObjectsTool));
 
-    void OnEnable()
+    private void OnEnable()
     {
-        m_ShowExtraFields = new AnimBool(true);
-        m_ShowExtraFields.valueChanged.AddListener(Repaint);
+        m_showExtraFields = new AnimBool(true);
+        m_showExtraFields.valueChanged.AddListener(Repaint);
     }
 
     private void OnGUI()
@@ -42,35 +35,11 @@ public class SpawnGameObjectsTool : EditorWindow
         SpawnButton();
         
         EditorGUILayout.Space();
-
-        m_spawnGameObjectHelpMessages.HelpMessage(m_prefab, m_objectName, m_prefabContainer);
-
-        m_ShowExtraFields.target = EditorGUILayout.ToggleLeft("Show extra fields", m_ShowExtraFields.target);
         
-        if (EditorGUILayout.BeginFadeGroup(m_ShowExtraFields.faded))
-        {
-            EditorGUI.indentLevel++;
-            
-            AddNumericalIdGui();
-            
-            m_position = EditorGUILayout.Vector3Field("Position", m_position);
-
-            EditorGUI.indentLevel--;
-        }
-
-        EditorGUILayout.EndFadeGroup();
-    }
-    
-    private void AddNumericalIdGui()
-    {
-        m_addId = EditorGUILayout.BeginToggleGroup("AddID", m_addId);
-        EditorGUI.indentLevel++;
-        objectID = EditorGUILayout.IntField("Object ID", objectID);
-        EditorGUI.indentLevel--;
-        EditorGUILayout.EndToggleGroup();
+        m_spawnGameObjectHelpMessages.HelpMessage(m_prefab, m_objectName, m_prefabContainer);
+        m_spawnGameObjectExtraFields.Draw(m_showExtraFields);
     }
 
-    
     private void EssentialFields()
     {
         EditorGUILayout.Space();
@@ -100,10 +69,14 @@ public class SpawnGameObjectsTool : EditorWindow
     
     private void SpawnObjects()
     {
-        GameObject newObject = Instantiate(m_prefab, m_position, Quaternion.identity, m_prefabContainer);
-        newObject.name = m_addId ? m_objectName + "_" + objectID : m_objectName;
+        var extraFields = m_spawnGameObjectExtraFields.ExtraFields;
+        GameObject newObject = Instantiate(m_prefab, extraFields.Position, Quaternion.identity, m_prefabContainer);
+        
+        newObject.name = extraFields.AddId 
+            ? m_objectName + "_" + extraFields.Id
+            : m_objectName;
 
-        if (m_addId)
-            objectID++;
+        if (extraFields.AddId)
+            m_spawnGameObjectExtraFields.IncrementObjectId();
     }
 }
