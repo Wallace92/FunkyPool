@@ -18,9 +18,13 @@ public class WhiteSphere : Sphere
     public void Update()
     {
         m_moveDir = PlayerInput.Update(m_moveDir);
-        
+
         if (Input.GetKeyDown(KeyCode.Space))
+        {
             Rigidbody.AddForce(m_moveDir * m_forceMultiplier, ForceMode.Impulse);
+            PlayerInput.RestartMoveDir();
+        }
+            
     }
 }
 

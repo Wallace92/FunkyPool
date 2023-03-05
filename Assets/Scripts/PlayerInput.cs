@@ -10,6 +10,13 @@ public class PlayerInput
     
     private float m_x;
     private float m_y;
+
+    public void RestartMoveDir()
+    {
+        m_x = 0;
+        m_y = 0;
+        MoveDirChanged?.Invoke(Vector3.zero);
+    }
     
     public Vector3 Update(Vector3 moveDir)
     {
