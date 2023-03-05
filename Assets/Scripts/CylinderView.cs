@@ -4,10 +4,6 @@ public class CylinderView : MonoBehaviour
 {
     public ScorePresenter ScorePresenter;
 
-    private Collider m_collider;
-
-    private void Awake() => m_collider = GetComponent<Collider>();
-
     private void Start()
     {
         ScorePresenter.RestartScore();
