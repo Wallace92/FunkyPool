@@ -10,9 +10,9 @@ public class HitLine : MonoBehaviour
         m_whiteSphere = GetComponent<WhiteSphere>();
     }
 
-    private void Start() => m_whiteSphere.MoveInput.MoveDirChanged += DrawLine;
+    private void Start() => m_whiteSphere.PlayerInput.MoveDirChanged += DrawLine;
 
-    private void OnDestroy() => m_whiteSphere.MoveInput.MoveDirChanged -= DrawLine;
+    private void OnDestroy() => m_whiteSphere.PlayerInput.MoveDirChanged -= DrawLine;
 
     private void DrawLine(Vector3 moveDir)
     {

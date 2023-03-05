@@ -1,10 +1,10 @@
 ﻿using System;
 using UnityEngine;
 
-public class KeyboardInput 
+public class PlayerInput 
 {
     public event Action<Vector3> MoveDirChanged;
-    public KeyboardInput(float movementChange) => m_movementChange = movementChange;
+    public PlayerInput(float movementChange) => m_movementChange = movementChange;
 
     private readonly float m_movementChange;
     
