@@ -1,4 +1,8 @@
-﻿public class RedSphere : Sphere,  IScore
+﻿using UnityEngine;
+
+public class RedSphere : Sphere,  IScore
 {
-    public int ScoreIncrement => 10;
+    [SerializeField]
+    private int m_scoreIncrement;
+    public int ScoreIncrement => m_scoreIncrement;
 }

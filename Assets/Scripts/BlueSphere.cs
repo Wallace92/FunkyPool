@@ -1,4 +1,8 @@
-﻿public class BlueSphere : Sphere, IScore
+﻿using UnityEngine;
+
+public class BlueSphere : Sphere, IScore
 {
-    public int ScoreIncrement => 6;
+    [SerializeField]
+    private int m_scoreIncrement;
+    public int ScoreIncrement => m_scoreIncrement;
 }

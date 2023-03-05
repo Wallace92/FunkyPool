@@ -1,9 +1,12 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CylinderView : MonoBehaviour
 {
     public ScorePresenter ScorePresenter;
+
+    private Collider m_collider;
+
+    private void Awake() => m_collider = GetComponent<Collider>();
 
     private void Start()
     {
@@ -16,5 +19,14 @@ public class CylinderView : MonoBehaviour
             ScorePresenter.IncreaseScore(1);
         else if (Input.GetMouseButtonDown(1))
             ScorePresenter.RestartScore();
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.TryGetComponent<IScore>(out var sphere))
+        {
+            Debug.Log("Collision with a Sphere detected, " + sphere.ScoreIncrement);
+            // Do something here, like destroying the GameObject or applying damage
+        }
     }
 }

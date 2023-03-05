@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class ScorePresenter : MonoBehaviour
@@ -19,18 +18,22 @@ public class ScorePresenter : MonoBehaviour
         UpdateScoreView();
     }
 
+    private void OnDestroy()
+    {
+        if (m_scoreModel != null)
+            m_scoreModel.PropertyChange -= OnPropertyChange;
+    }
+
     public void IncreaseScore(int amount) => m_scoreModel.IncreaseScore(amount);
     public void RestartScore() => m_scoreModel.Restart();
     
     private void OnPropertyChange(object sender, PropertyChangedEventArgs e)
     {
-        switch (sender)
-        {
-            case ScoreModel scoreModel:
-                if (e.PropertyName == nameof(scoreModel.Score))
-                    UpdateScoreView();
-                break;
-        }
+        if (sender is not ScoreModel) 
+            return;
+        
+        if (e.PropertyName == nameof(ScoreModel.Score))
+            UpdateScoreView();
     }
 
     private void UpdateScoreView() => m_scoreText.text = m_scoreModel.Score.ToString();
