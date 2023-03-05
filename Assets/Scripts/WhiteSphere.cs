@@ -4,6 +4,9 @@ using UnityEngine;
 public class WhiteSphere : Sphere
 {
     [SerializeField]
+    private GameManager m_gameManager;
+    
+    [SerializeField]
     private float m_moveInputSpeed;
     
     [SerializeField]
@@ -13,10 +16,17 @@ public class WhiteSphere : Sphere
     
     private Vector3 m_moveDir;
     
-    private void Awake() => PlayerInput = new PlayerInput(m_moveInputSpeed);
-    
+    private new void Awake()
+    {
+        base.Awake();
+        PlayerInput = new PlayerInput(m_moveInputSpeed);
+    }
+
     public void Update()
     {
+        if (!m_gameManager.SpheresDontMove)
+            return;
+        
         m_moveDir = PlayerInput.Update(m_moveDir);
 
         if (Input.GetKeyDown(KeyCode.Space))
