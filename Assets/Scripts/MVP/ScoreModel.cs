@@ -1,5 +1,3 @@
-using Observer;
-
 public class ScoreModel : Model
 {
     private int m_score;

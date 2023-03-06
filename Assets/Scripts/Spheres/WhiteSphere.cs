@@ -6,6 +6,8 @@ public class WhiteSphere : Sphere
     [SerializeField]
     private GameManager m_gameManager;
     
+    public TurnPresenter TurnPresenter;
+    
     [SerializeField]
     private float m_moveInputSpeed;
     
@@ -33,6 +35,7 @@ public class WhiteSphere : Sphere
         {
             Rigidbody.AddForce(m_moveDir * m_forceMultiplier, ForceMode.Impulse);
             PlayerInput.RestartMoveDir();
+            TurnPresenter.IncreaseTurn(1);
         }
             
     }
