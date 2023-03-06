@@ -12,6 +12,6 @@ public class CylinderView : MonoBehaviour
             return;
         
         ScorePresenter.IncreaseScore(sphere.ScoreIncrement);
-        Destroy(other.gameObject);
+        other.gameObject.SetActive(false);
     }
 }

@@ -2,9 +2,9 @@
 using TMPro;
 using UnityEngine;
 
+[RequireComponent(typeof(ScoreModel))]
 public class ScorePresenter : MonoBehaviour
 {
-    [SerializeField]
     private ScoreModel m_scoreModel;
     
     [SerializeField]
@@ -12,21 +12,16 @@ public class ScorePresenter : MonoBehaviour
 
     private void Awake()
     {
-        if (m_scoreModel != null)
-            m_scoreModel.PropertyChange += OnPropertyChange;
+        m_scoreModel = GetComponent<ScoreModel>();
+        m_scoreModel.PropertyChange += OnPropertyChange;
         
         UpdateScoreView();
     }
 
-    private void OnDestroy()
-    {
-        if (m_scoreModel != null)
-            m_scoreModel.PropertyChange -= OnPropertyChange;
-    }
 
     public void IncreaseScore(int amount) => m_scoreModel.IncreaseScore(amount);
     public void RestartScore() => m_scoreModel.Restart();
-    
+
     private void OnPropertyChange(object sender, PropertyChangedEventArgs e)
     {
         if (sender is not ScoreModel) 
@@ -35,6 +30,7 @@ public class ScorePresenter : MonoBehaviour
         if (e.PropertyName == nameof(ScoreModel.Score))
             UpdateScoreView();
     }
-
     private void UpdateScoreView() => m_scoreText.text = m_scoreModel.Score.ToString();
+    
+    private void OnDestroy() => m_scoreModel.PropertyChange -= OnPropertyChange;
 }
