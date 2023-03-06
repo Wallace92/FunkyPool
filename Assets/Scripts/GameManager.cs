@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -6,14 +5,32 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     [SerializeField]
+    private ScorePresenter m_scorePresenter;
+    
+    [SerializeField]
     private int m_maxTurnNumber;
 
-    [SerializeField]
+    private List<Sphere> m_spheres = new List<Sphere>();
     private WhiteSphere m_whiteSphere;
+    
+    private void Awake()
+    {
+        m_spheres = FindObjectsOfType<Sphere>().ToList();
+        m_whiteSphere = FindObjectOfType<WhiteSphere>();
+    }
 
-    private void Awake() => m_whiteSphere.TurnPresenter.SetMaxTurnNumber(m_maxTurnNumber);
+    private void Start()
+    {
+        if (m_whiteSphere != null)
+            m_whiteSphere.Constructor(this, m_maxTurnNumber);
+    }
 
-    public List<Sphere> Spheres = new List<Sphere>();
 
-    public bool SpheresDontMove => Spheres.All(sphere => !sphere.IsMoving);
+    private void Update()
+    {
+        if (m_whiteSphere.TurnPresenter.GetTurnNumber() == m_maxTurnNumber)
+            Debug.Log("Congratulation your score is: " + m_scorePresenter.GetScore());
+    }
+
+    public bool SpheresDontMove => m_spheres.All(sphere => !sphere.IsMoving);
 }

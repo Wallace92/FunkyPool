@@ -11,6 +11,8 @@ public class ScorePresenter : Presenter<ScoreModel>
 
     private void Start() => UpdateScoreView();
 
+    public int GetScore() => Model.Score;
+
     public void IncreaseScore(int amount) => Model.IncreaseScore(amount);
     public void RestartScore() => Model.Restart();
 

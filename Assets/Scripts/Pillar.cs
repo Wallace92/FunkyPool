@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class CylinderView : MonoBehaviour
+public class Pillar : MonoBehaviour
 {
     public ScorePresenter ScorePresenter;
 
@@ -15,3 +15,4 @@ public class CylinderView : MonoBehaviour
         other.gameObject.SetActive(false);
     }
 }
+

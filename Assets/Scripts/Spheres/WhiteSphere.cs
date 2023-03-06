@@ -1,20 +1,19 @@
-﻿
-using UnityEngine;
+﻿using UnityEngine;
 
 public class WhiteSphere : Sphere
 {
-    [SerializeField]
-    private GameManager m_gameManager;
-    
     public TurnPresenter TurnPresenter;
-    
+
     [SerializeField]
     private float m_moveInputSpeed;
-    
+
     [SerializeField]
     private float m_forceMultiplier;
-    
+
+
     public PlayerInput PlayerInput;
+    
+    private GameManager m_gameManager;
     
     private Vector3 m_moveDir;
     
@@ -22,6 +21,15 @@ public class WhiteSphere : Sphere
     {
         base.Awake();
         PlayerInput = new PlayerInput(m_moveInputSpeed);
+        
+        if (TurnPresenter == null)
+            Debug.LogError($"Assign {TurnPresenter} to WhiteSphere");
+    }
+
+    public void Constructor(GameManager gameManager, int maxTurnNumber)
+    {
+        m_gameManager = gameManager;
+        TurnPresenter.Constructor(maxTurnNumber);
     }
 
     public void Update()
@@ -37,7 +45,6 @@ public class WhiteSphere : Sphere
             PlayerInput.RestartMoveDir();
             TurnPresenter.IncreaseTurn(1);
         }
-            
     }
 }
 

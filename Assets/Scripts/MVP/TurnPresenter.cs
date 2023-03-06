@@ -8,9 +8,13 @@ public class TurnPresenter : Presenter<TurnModel>
     [SerializeField]
     private TextMeshProUGUI m_turnText;
 
-    private void Start() => UpdateTurnView();
-    
-    public void SetMaxTurnNumber(int maxTurnNumber) => Model.MaxTurnNumber = maxTurnNumber;
+    public void Constructor(int maxTurnNumber)
+    {
+        Model.MaxTurnNumber = maxTurnNumber;
+        UpdateTurnView();
+    }
+
+    public int GetTurnNumber() => Model.Turn;
 
     public void IncreaseTurn(int amount) => Model.IncreaseScore(amount);
     public void RestartTurn() => Model.Restart();
