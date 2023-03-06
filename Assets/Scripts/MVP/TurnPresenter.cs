@@ -7,24 +7,23 @@ public class TurnPresenter : Presenter<TurnModel>
 {
     [SerializeField]
     private TextMeshProUGUI m_turnText;
+
+    private void Start() => UpdateTurnView();
     
+    public void SetMaxTurnNumber(int maxTurnNumber) => Model.MaxTurnNumber = maxTurnNumber;
+
     public void IncreaseTurn(int amount) => Model.IncreaseScore(amount);
     public void RestartTurn() => Model.Restart();
-    
-    private new void Awake()
-    {
-        base.Awake();
-        UpdateScoreView();
-    }
-    
+
+
     protected override void OnPropertyChange(object sender, PropertyChangedEventArgs e)
     {
         if (sender is not TurnModel)
             return;
 
         if (e.PropertyName == nameof(TurnModel.Turn))
-            UpdateScoreView();
+            UpdateTurnView();
     }
     
-    private void UpdateScoreView() => m_turnText.text = $"Turn: {Model.Turn}";
+    private void UpdateTurnView() => m_turnText.text = $"Turn: {Model.Turn}/{Model.MaxTurnNumber}";
 }
