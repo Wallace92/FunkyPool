@@ -10,6 +10,9 @@ public class WhiteSphere : Sphere
 
     [SerializeField]
     private float m_forceMultiplier;
+    
+    [SerializeField]
+    private float m_forceMaximum;
 
     public PlayerInput PlayerInput;
     
@@ -22,7 +25,7 @@ public class WhiteSphere : Sphere
     private new void Awake()
     {
         base.Awake();
-        PlayerInput = new PlayerInput(m_moveInputSpeed);
+        PlayerInput = new PlayerInput(m_moveInputSpeed, m_forceMaximum);
         
         if (TurnPresenter == null)
             Debug.LogError($"Assign {TurnPresenter} to WhiteSphere");
@@ -55,6 +58,7 @@ public class WhiteSphere : Sphere
     {
         Rigidbody.AddForce(m_moveDir * m_forceMultiplier, ForceMode.Impulse);
         PlayerInput.RestartMoveDir();
+        m_moveDir = Vector3.zero;
         
         yield return new WaitForFixedUpdate();
         m_stopMovement = true;

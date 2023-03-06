@@ -4,10 +4,15 @@ using UnityEngine;
 public class PlayerInput 
 {
     public event Action<Vector3> MoveDirChanged;
-    public PlayerInput(float movementChange) => m_movementChange = movementChange;
+    public PlayerInput(float movementChange, float forceMultiplier)
+    {
+        m_movementChange = movementChange;
+        m_forceMultiplier = forceMultiplier;
+    }
 
     private readonly float m_movementChange;
-    
+
+    private readonly float m_forceMultiplier;
     private float m_x;
     private float m_y;
 
@@ -20,8 +25,9 @@ public class PlayerInput
     
     public Vector3 Update(Vector3 moveDir)
     {
-        m_x = Horizontal(m_x);
-        m_y = Vertical(m_y);
+        
+        m_x = Mathf.Clamp(Horizontal(m_x), -m_forceMultiplier, m_forceMultiplier);
+        m_y = Mathf.Clamp(Vertical(m_y), -m_forceMultiplier, m_forceMultiplier);
         
         var dir = new Vector3(m_x, 0, m_y);
         

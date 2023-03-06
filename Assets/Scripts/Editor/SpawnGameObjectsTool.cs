@@ -28,6 +28,10 @@ public class SpawnGameObjectsTool : EditorWindow
         GUILayout.Label("Spawn GameObject", EditorStyles.boldLabel);
 
         EssentialFields();
+
+        if (String.IsNullOrEmpty(m_objectName) && m_prefab != null)
+            m_objectName = m_prefab.name;
+        
         SpawnButton(m_prefab, m_prefabContainer, m_objectName, m_spawnGameObjectExtraFields);
         
         EditorGUILayout.Space();
