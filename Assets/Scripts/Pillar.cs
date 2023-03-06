@@ -2,16 +2,16 @@
 
 public class Pillar : MonoBehaviour
 {
-    public ScorePresenter ScorePresenter;
+    private ScorePresenter m_scorePresenter;
 
-    private void Start() => ScorePresenter.RestartScore();
+    public void Constructor(ScorePresenter scorePresenter) => m_scorePresenter = scorePresenter;
 
     private void OnCollisionEnter(Collision other)
     {
         if (!other.gameObject.TryGetComponent<IScore>(out var sphere)) 
             return;
         
-        ScorePresenter.IncreaseScore(sphere.ScoreIncrement);
+        m_scorePresenter.IncreaseScore(sphere.ScoreIncrement);
         other.gameObject.SetActive(false);
     }
 }

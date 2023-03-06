@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class WhiteSphere : Sphere
 {
@@ -10,12 +11,13 @@ public class WhiteSphere : Sphere
     [SerializeField]
     private float m_forceMultiplier;
 
-
     public PlayerInput PlayerInput;
     
     private GameManager m_gameManager;
     
     private Vector3 m_moveDir;
+    
+    private bool m_stopMovement;
     
     private new void Awake()
     {
@@ -34,17 +36,28 @@ public class WhiteSphere : Sphere
 
     public void Update()
     {
-        if (!m_gameManager.SpheresDontMove)
+        if (!m_gameManager.SpheresDontMove || m_gameManager.LevelCompleted)
             return;
         
         m_moveDir = PlayerInput.Update(m_moveDir);
 
         if (Input.GetKeyDown(KeyCode.Space))
+            StartCoroutine(StartMovementRoutine());
+        
+        if (m_stopMovement)
         {
-            Rigidbody.AddForce(m_moveDir * m_forceMultiplier, ForceMode.Impulse);
-            PlayerInput.RestartMoveDir();
             TurnPresenter.IncreaseTurn(1);
+            m_stopMovement = false;
         }
+    }
+
+    private IEnumerator StartMovementRoutine()
+    {
+        Rigidbody.AddForce(m_moveDir * m_forceMultiplier, ForceMode.Impulse);
+        PlayerInput.RestartMoveDir();
+        
+        yield return new WaitForFixedUpdate();
+        m_stopMovement = true;
     }
 }
 

@@ -4,18 +4,24 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public bool LevelCompleted;
+
+    public bool SpheresDontMove => m_spheres.All(sphere => !sphere.IsMoving);
+
     [SerializeField]
     private ScorePresenter m_scorePresenter;
-    
+
     [SerializeField]
     private int m_maxTurnNumber;
 
+    private List<Pillar> m_pillars = new List<Pillar>();
     private List<Sphere> m_spheres = new List<Sphere>();
     private WhiteSphere m_whiteSphere;
-    
+
     private void Awake()
     {
         m_spheres = FindObjectsOfType<Sphere>().ToList();
+        m_pillars = FindObjectsOfType<Pillar>().ToList();
         m_whiteSphere = FindObjectOfType<WhiteSphere>();
     }
 
@@ -23,14 +29,21 @@ public class GameManager : MonoBehaviour
     {
         if (m_whiteSphere != null)
             m_whiteSphere.Constructor(this, m_maxTurnNumber);
-    }
 
+        foreach (var pillar in m_pillars)
+        {
+            pillar.Constructor(m_scorePresenter);
+        }
+        
+        m_scorePresenter.RestartScore();
+    }
 
     private void Update()
     {
-        if (m_whiteSphere.TurnPresenter.GetTurnNumber() == m_maxTurnNumber)
-            Debug.Log("Congratulation your score is: " + m_scorePresenter.GetScore());
+        if (LevelCompleted || m_whiteSphere.TurnPresenter.GetTurnNumber() != m_maxTurnNumber)
+            return;
+        
+        Debug.Log("Congratulation your score is: " + m_scorePresenter.GetScore());
+        LevelCompleted = true;
     }
-
-    public bool SpheresDontMove => m_spheres.All(sphere => !sphere.IsMoving);
 }
