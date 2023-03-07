@@ -3,7 +3,7 @@ using UnityEditor.AnimatedValues;
 
 public class SpawnGameObjectExtraFields
 {
-    public ExtraFields ExtraFields;
+    public SpawnObjectExtraFieldsData SpawnObjectExtraFieldsData;
     
     public void DisplayExtraFields(AnimBool showExtraFields)
     {
@@ -15,7 +15,7 @@ public class SpawnGameObjectExtraFields
 
             AddNumericalIdGui();
 
-            ExtraFields.Position = EditorGUILayout.Vector3Field("Position",  ExtraFields.Position);
+            SpawnObjectExtraFieldsData.Position = EditorGUILayout.Vector3Field("Position",  SpawnObjectExtraFieldsData.Position);
 
             EditorGUI.indentLevel--;
         }
@@ -23,15 +23,15 @@ public class SpawnGameObjectExtraFields
         EditorGUILayout.EndFadeGroup();
     }
 
-    public void IncrementObjectId() => ExtraFields.Id++;
+    public void IncrementObjectId() => SpawnObjectExtraFieldsData.Id++;
     
     private void AddNumericalIdGui()
     {
-        ExtraFields.AddId = EditorGUILayout.BeginToggleGroup("AddID", ExtraFields.AddId);
+        SpawnObjectExtraFieldsData.AddId = EditorGUILayout.BeginToggleGroup("AddID", SpawnObjectExtraFieldsData.AddId);
         
         EditorGUI.indentLevel++;
         
-        ExtraFields.Id = EditorGUILayout.IntField("Object ID", ExtraFields.Id);
+        SpawnObjectExtraFieldsData.Id = EditorGUILayout.IntField("Object ID", SpawnObjectExtraFieldsData.Id);
         
         EditorGUI.indentLevel--;
         EditorGUILayout.EndToggleGroup();

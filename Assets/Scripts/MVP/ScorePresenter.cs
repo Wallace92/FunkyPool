@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using TMPro;
 using UnityEngine;
 
@@ -8,11 +7,8 @@ public class ScorePresenter : Presenter<ScoreModel>
 {
     [SerializeField]
     private TextMeshProUGUI m_scoreText;
-
-    private void Start() => UpdateScoreView();
-
+    
     public int GetScore() => Model.Score;
-
     public void IncreaseScore(int amount) => Model.IncreaseScore(amount);
     public void RestartScore() => Model.Restart();
 
@@ -24,6 +20,8 @@ public class ScorePresenter : Presenter<ScoreModel>
         if (e.PropertyName == nameof(ScoreModel.Score))
             UpdateScoreView();
     }
+
+    private void Start() => UpdateScoreView();
     private void UpdateScoreView() => m_scoreText.text = $"Score: {Model.Score}";
 }
 

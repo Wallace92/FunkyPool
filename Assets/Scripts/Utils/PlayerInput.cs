@@ -11,8 +11,8 @@ public class PlayerInput
     }
 
     private readonly float m_movementChange;
-
     private readonly float m_forceMultiplier;
+    
     private float m_x;
     private float m_y;
 

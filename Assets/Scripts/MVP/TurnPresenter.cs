@@ -14,11 +14,8 @@ public class TurnPresenter : Presenter<TurnModel>
         UpdateTurnView();
     }
 
-    public int GetTurnNumber() => Model.Turn;
-
     public void IncreaseTurn(int amount) => Model.IncreaseScore(amount);
-    public void RestartTurn() => Model.Restart();
-
+    public int GetTurnNumber() => Model.Turn;
 
     protected override void OnPropertyChange(object sender, PropertyChangedEventArgs e)
     {
@@ -29,5 +26,6 @@ public class TurnPresenter : Presenter<TurnModel>
             UpdateTurnView();
     }
     
-    private void UpdateTurnView() => m_turnText.text = $"Turn: {Model.Turn}/{Model.MaxTurnNumber}";
+    private void UpdateTurnView() => 
+        m_turnText.text = $"Turn: {Model.Turn}/{Model.MaxTurnNumber}";
 }

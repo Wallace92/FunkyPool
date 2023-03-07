@@ -7,14 +7,8 @@ public class TurnModel : Model
         get => m_turn; 
         set => SetValue(value, ref m_turn);
     }
-    
-    private int m_maxTurnNumber;
 
-    public int MaxTurnNumber
-    {
-        get => m_maxTurnNumber;
-        set => m_maxTurnNumber = value;
-    }
+    public int MaxTurnNumber { get; set; }
 
     public void IncreaseScore(int amount) => Turn += amount;
     public void Restart() => Turn = 0;

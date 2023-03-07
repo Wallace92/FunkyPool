@@ -14,9 +14,9 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private int m_maxTurnNumber;
 
+    private WhiteSphere m_whiteSphere;
     private List<Pillar> m_pillars = new List<Pillar>();
     private List<Sphere> m_spheres = new List<Sphere>();
-    private WhiteSphere m_whiteSphere;
 
     private void Awake()
     {

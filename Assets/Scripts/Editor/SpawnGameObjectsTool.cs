@@ -18,8 +18,11 @@ public class SpawnGameObjectsTool : EditorWindow
 
     private void OnEnable()
     {
-        m_showExtraFields = new AnimBool(true);
-        m_showExtraFields.speed = 8;
+        m_showExtraFields = new AnimBool(true)
+        {
+            speed = 8
+        };
+        
         m_showExtraFields.valueChanged.AddListener(Repaint);
     }
 
@@ -72,7 +75,7 @@ public class SpawnGameObjectsTool : EditorWindow
     
     private void SpawnObjects(GameObject prefab,  Transform prefabContainer, SpawnGameObjectExtraFields spawnGameObjectExtraFields)
     {
-        var extraFields = spawnGameObjectExtraFields.ExtraFields;
+        var extraFields = spawnGameObjectExtraFields.SpawnObjectExtraFieldsData;
         
         GameObject spawnedObject = Instantiate(prefab, extraFields.Position, Quaternion.identity, prefabContainer);
         
@@ -97,6 +100,6 @@ public class SpawnGameObjectsTool : EditorWindow
     private void OnSceneGUI(SceneView sceneView)
     {
         Handles.color = Color.red;
-        Handles.DrawWireDisc(m_spawnGameObjectExtraFields.ExtraFields.Position, Vector3.up, 0.5f);
+        Handles.DrawWireDisc(m_spawnGameObjectExtraFields.SpawnObjectExtraFieldsData.Position, Vector3.up, 0.5f);
     }
 }

@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class Model : MonoBehaviour, INotifyPropertyChanged
 {
+    public event PropertyChangedEventHandler PropertyChange;
+
     protected void SetValue<T>(T value, ref T field, [CallerMemberName] string propertyName = null)
     {
         if (value.Equals(field))
@@ -20,6 +22,4 @@ public class Model : MonoBehaviour, INotifyPropertyChanged
     {
         PropertyChange?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
-
-    public event PropertyChangedEventHandler PropertyChange;
 }
