@@ -83,4 +83,20 @@ public class SpawnGameObjectsTool : EditorWindow
         if (extraFields.AddId)
             spawnGameObjectExtraFields.IncrementObjectId();
     }
+    
+    private void OnFocus() => SceneView.duringSceneGui += OnSceneGUI;
+
+    private void OnDisable()
+    {
+        SceneView.duringSceneGui -= OnSceneGUI;
+        SceneView.RepaintAll();
+    }
+
+    private void OnDestroy() => SceneView.duringSceneGui -= OnSceneGUI;
+
+    private void OnSceneGUI(SceneView sceneView)
+    {
+        Handles.color = Color.red;
+        Handles.DrawWireDisc(m_spawnGameObjectExtraFields.ExtraFields.Position, Vector3.up, 0.5f);
+    }
 }
